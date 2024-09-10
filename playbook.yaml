@@ -1,7 +1,7 @@
 ---
 ### A playbook for configuring a Linux node with Ansible.
 # - Create bin directory and add it to the execution path
-# - Create a cirtual environment and install the following collections and execution environments:
+# - Create a virtual environment and install the following collections and execution environments:
 #   > azure.azcollection
 #   > redhat.ansible_azure_sre
 #   > redhat.ansible_azure_mgmt
@@ -25,35 +25,42 @@
         dest: /etc/profile.d/bin-to-path.sh
         content: 'PATH=$PATH:/usr/bin'
 
+        # shell script module -> export command (if above doesn't work)
+
     - name: Ensure pip is installed
       ansible.builtin.command: 
         cmd: python -m ensurepip --upgrade
 
-    - name: Install virtualenv
-      ansible.builtin.pip:
-        name: virtualenv
-
-    # https://stackoverflow.com/questions/26402123/ansible-creating-a-virtualenv
-    - name: Create venv folder
-      ansible.builtin.file:
-        name: /opt/venv-folder
-        state: directory
-
-    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html#ansible-collections-ansible-builtin-pip-module
-    - name: Make a venv
-      ansible.builtin.pip:
-        virtualenv: /opt/venv-folder
-        virtualenv_python: python3.12
-
-    - name: Source the venv
+    - name: Create venv
       ansible.builtin.command:
-        cmd: source /opt/venv-folder/bin/activate
+          cmd: python -m venv my-venv
 
+    - name: Source the venv # May need a different solution
+      ansible.builtin.command:
+        cmd: source ./my-venv/bin/activate
+
+    # Install Ansible and all collections needed
     - name: Install Ansible
       ansible.builtin.pip:
         name: ansible
+        virtualenv: ./my-venv/lib/python3.12/site-packages
 
-    - name: Install collections
-    
+    - name: Install azcollection
+      ansible.builtin.command:
+        cmd: ansible-galaxy collection install azure.azcollection
+
+    - name: Install ansible_azure_sre
+      ansible.builtin.command:
+        cmd: ansible-galaxy collection install git@github.com:ansible/ansible-azure-sre.git
+
+    - name: Install ansible_azure_mgmt
+      ansible.builtin.command:
+        cmd: ansible-galaxy collection install git@gitlab.cee.redhat.com:aoc/ansible-azure-mgmt.git
+
+    - name: Install managed_azure
+      ansible.builtin.command:
+        cmd: ansible-galaxy collection install git@github.com:ansible/managed_azure.git
 
     - name: Create kubectl alias
+      ansible.builtin.command:
+        cmd: echo 'alias k="kubectl"' >> .bashrc

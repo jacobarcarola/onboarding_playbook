@@ -1,0 +1,59 @@
+---
+### A playbook for configuring a Linux node with Ansible.
+# - Create bin directory and add it to the execution path
+# - Create a cirtual environment and install the following collections and execution environments:
+#   > azure.azcollection
+#   > redhat.ansible_azure_sre
+#   > redhat.ansible_azure_mgmt
+#   > redhat.managed_azure
+#   > https://quay.io.repository/aoc/ee-aap-azure-sre (AAP Azure SRE execution environment)
+# - Create an alias called "k" for the kubectl command
+
+- name: Linux Environment Configuration
+  hosts: linuxhost
+  tasks:
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html#examples
+    - name: Create bin directory
+      ansible.builtin.file:
+        path: /usr/bin
+        state: directory
+        mode: '0755'
+
+    # https://www.jeffgeerling.com/blog/2017/add-path-global-path-ansible
+    - name: Place bin in execution path
+      ansible.builtin.copy:
+        dest: /etc/profile.d/bin-to-path.sh
+        content: 'PATH=$PATH:/usr/bin'
+
+    - name: Ensure pip is installed
+      ansible.builtin.command: 
+        cmd: python -m ensurepip --upgrade
+
+    - name: Install virtualenv
+      ansible.builtin.pip:
+        name: virtualenv
+
+    # https://stackoverflow.com/questions/26402123/ansible-creating-a-virtualenv
+    - name: Create venv folder
+      ansible.builtin.file:
+        name: /opt/venv-folder
+        state: directory
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html#ansible-collections-ansible-builtin-pip-module
+    - name: Make a venv
+      ansible.builtin.pip:
+        virtualenv: /opt/venv-folder
+        virtualenv_python: python3.12
+
+    - name: Source the venv
+      ansible.builtin.command:
+        cmd: source /opt/venv-folder/bin/activate
+
+    - name: Install Ansible
+      ansible.builtin.pip:
+        name: ansible
+
+    - name: Install collections
+    
+
+    - name: Create kubectl alias

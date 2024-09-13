@@ -1,0 +1,6 @@
+---
+- name: Ping onboardingVM
+  hosts: virtualmachine
+  tasks:
+    - name: Ping onboardingVM
+      ping:

@@ -4,8 +4,3 @@
   tasks:
     - name: Ping onboardingVM
       ping:
-
-- name: Print return information from previous task
-  ansible.builtin.debug:
-    var: result
-    verbosity: 2

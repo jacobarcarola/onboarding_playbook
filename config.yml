@@ -30,6 +30,7 @@
       ansible.builtin.copy:
         dest: /etc/profile.d/bin-to-path.sh
         content: 'PATH=$PATH:/usr/bin'
+      become: true
 
         # shell script module -> export command (if above doesn't work)
 

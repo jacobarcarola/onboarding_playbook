@@ -23,7 +23,7 @@
         path: /usr/bin
         state: directory
         mode: '0755'
-        become: yes
+      become: true
 
     # https://www.jeffgeerling.com/blog/2017/add-path-global-path-ansible
     - name: Place bin in execution path

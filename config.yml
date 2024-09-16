@@ -12,6 +12,11 @@
 - name: Linux Environment Configuration
   hosts: virtualmachine
   tasks:
+
+    - name: Print a little message
+      ansible.builtin.debug:
+        msg: The playbook has begun!
+
     # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html#examples
     - name: Create bin directory
       ansible.builtin.file:

@@ -1,0 +1,6 @@
+---
+- name: Make foo directory on another machine
+  hosts: virtualmachine
+  tasks:
+    - name: Make directory
+      ansible.builtin.command: mkdir /home/azureuser/foo

@@ -35,8 +35,7 @@
         # shell script module -> export command (if above doesn't work)
 
     - name: Ensure pip is installed
-      ansible.builtin.command: 
-        cmd: python -m ensurepip --upgrade
+      ansible.builtin.command: python -m ensurepip --upgrade
 
     - name: Create venv
       ansible.builtin.command:

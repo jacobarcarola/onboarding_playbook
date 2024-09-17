@@ -40,8 +40,7 @@
         creates: /home/azureuser/my-venv/bin/activate
 
     - name: source the venv
-      ansible.builtin.command:
-        cmd: source /home/azureuser/my-venv/bin/activate
+      ansible.builtin.shell: source /home/azureuser/my-venv/bin/activate
 
     # - name: Install pip in the venv
     #  ansible.builtin.command:

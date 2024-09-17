@@ -23,7 +23,6 @@
         path: ~/usr/bin
         state: directory
         mode: '0755'
-      become: true
 
     # https://www.jeffgeerling.com/blog/2017/add-path-global-path-ansible
     - name: Place bin in execution path
@@ -39,16 +38,15 @@
       ansible.builtin.command: python -m ensurepip --upgrade
 
     - name: Create venv
-      ansible.builtin.command: python -m venv my-venv
-
-    - name: Source the venv # May need a different solution
-      ansible.builtin.command: source ~/my-venv/bin/activate
+      ansible.builtin.command: 
+        cmd: python -m venv ~/my-venv
+        creates: /home/azureuser/my-venv/bin/activate
 
     # Install Ansible and all collections needed
     - name: Install Ansible
       ansible.builtin.pip:
         name: ansible
-        virtualenv: ./my-venv/lib/python3.12/site-packages
+        virtualenv: ~/my-venv
 
     - name: Install azcollection
       ansible.builtin.command:

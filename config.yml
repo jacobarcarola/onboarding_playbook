@@ -20,7 +20,7 @@
     # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html#examples
     - name: Create bin directory
       ansible.builtin.file:
-        path: /usr/bin
+        path: ~/usr/bin
         state: directory
         mode: '0755'
       become: true
@@ -30,6 +30,7 @@
       ansible.builtin.copy:
         dest: /etc/profile.d/bin-to-path.sh
         content: 'PATH=$PATH:/usr/bin'
+        mode: '0755'
       become: true
 
         # shell script module -> export command (if above doesn't work)
@@ -38,12 +39,10 @@
       ansible.builtin.command: python -m ensurepip --upgrade
 
     - name: Create venv
-      ansible.builtin.command:
-          cmd: python -m venv my-venv
+      ansible.builtin.command: python -m venv my-venv
 
     - name: Source the venv # May need a different solution
-      ansible.builtin.command:
-        cmd: source ./my-venv/bin/activate
+      ansible.builtin.command: source ~/my-venv/bin/activate
 
     # Install Ansible and all collections needed
     - name: Install Ansible

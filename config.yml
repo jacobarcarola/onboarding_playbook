@@ -31,13 +31,13 @@
 
         # shell script module -> export command (if above doesn't work)
 
-    - name: Install virtualenv module
-      ansible.builtin.pip:
-        name: virtualenv
+    # - name: Install virtualenv module
+    #   ansible.builtin.pip:
+    #     name: virtualenv
 
     - name: Create venv
-      ansible.builtin.command: 
-        cmd: python -m virtualenv /home/azureuser/my-venv
+      ansible.builtin.command:
+        cmd: python -m venv /home/azureuser/my-venv
 
     - name: source the venv
       ansible.builtin.shell: source /home/azureuser/my-venv/bin/activate

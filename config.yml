@@ -26,7 +26,7 @@
 
     # https://www.jeffgeerling.com/blog/2017/add-path-global-path-ansible
     - name: Place bin in execution path
-      ansible.builtin.command: export PATH=$PATH: /home/azureuser/usr/bin
+      ansible.builtin.command: "export PATH=$PATH: /home/azureuser/usr/bin"
       become: true
 
         # shell script module -> export command (if above doesn't work)

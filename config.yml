@@ -36,7 +36,7 @@
 
     - name: Create venv
       ansible.builtin.command: 
-        cmd: python -m venv ~/my-venv
+        cmd: python -m venv --upgrade /home/azureuser/my-venv
         creates: /home/azureuser/my-venv/bin/activate
 
     # Install Ansible and all collections needed

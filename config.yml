@@ -36,15 +36,18 @@
 
     - name: Create venv
       ansible.builtin.command: 
-        cmd: python -m venv --upgrade /home/azureuser/my-venv
+        cmd: python -m venv /home/azureuser/my-venv
         creates: /home/azureuser/my-venv/bin/activate
+
+    - name: Install pip in the venv
+      ansible.builtin.command:
+        cmd: /home/azureuser/my-venv/bin/python -m ensurepip --upgrade
 
     # Install Ansible and all collections needed
     - name: Install Ansible
       ansible.builtin.pip:
         name: ansible
-        virtualenv: home/azureuser/my-venv/
-        virtualenv_command: python3.9 -m venv
+        virtualenv: /home/azureuser/my-venv
 
     - name: Install azcollection
       ansible.builtin.command:

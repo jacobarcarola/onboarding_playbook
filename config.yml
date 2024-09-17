@@ -29,12 +29,6 @@
       ansible.builtin.shell: "export PATH=$PATH:/home/azureuser/bin"
       become: true
 
-        # shell script module -> export command (if above doesn't work)
-
-    # - name: Install virtualenv module
-    #   ansible.builtin.pip:
-    #     name: virtualenv
-
     - name: Create venv
       ansible.builtin.command:
         cmd: python -m venv /home/azureuser/my-venv
@@ -51,22 +45,23 @@
       ansible.builtin.pip:
         name: ansible
         virtualenv: /home/azureuser/my-venv
+        extra_args: --no-cache-dir
 
     - name: Install azcollection
       ansible.builtin.command:
-        cmd: ansible-galaxy collection install azure.azcollection
+        cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install azure.azcollection -p /home/azureuser/my-venv/collections
 
     - name: Install ansible_azure_sre
       ansible.builtin.command:
-        cmd: ansible-galaxy collection install git@github.com:ansible/ansible-azure-sre.git
+        cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install git@github.com:ansible/ansible-azure-sre.git -p /home/azureuser/my-venv/collections
 
     - name: Install ansible_azure_mgmt
       ansible.builtin.command:
-        cmd: ansible-galaxy collection install git@gitlab.cee.redhat.com:aoc/ansible-azure-mgmt.git
+        cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install git@gitlab.cee.redhat.com:aoc/ansible-azure-mgmt.git -p /home/azureuser/my-venv/collections
 
     - name: Install managed_azure
       ansible.builtin.command:
-        cmd: ansible-galaxy collection install git@github.com:ansible/managed_azure.git
+        cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install git@github.com:ansible/managed_azure.git -p /home/azureuser/my-venv/collections
 
     - name: Create kubectl alias
       ansible.builtin.command:

@@ -28,7 +28,7 @@
     - name: Place bin in execution path
       ansible.builtin.copy:
         dest: /etc/profile.d/bin-to-path.sh
-        content: 'PATH=$PATH:/usr/bin'
+        content: 'PATH=$PATH:home/azureuser/usr/bin'
         mode: '0755'
       become: true
 

@@ -46,7 +46,7 @@
     - name: Install Ansible
       ansible.builtin.pip:
         name: ansible
-        virtualenv: ~/my-venv
+        virtualenv: ~/my-venv/lib64/python3.9/site-packages/
 
     - name: Install azcollection
       ansible.builtin.command:

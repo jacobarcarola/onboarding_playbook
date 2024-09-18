@@ -11,8 +11,8 @@
 
 - name: Linux Environment Configuration
   hosts: virtualmachine
+  become: true
   tasks:
-
     - name: Print a little message
       ansible.builtin.debug:
         msg: The playbook has begun!
@@ -31,7 +31,6 @@
     - name: Install pip
       ansible.builtin.command:
         cmd: python -m ensurepip --upgrade
-        become: true
 
     - name: Create venv
       ansible.builtin.command:

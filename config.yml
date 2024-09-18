@@ -18,8 +18,9 @@
         msg: The playbook has begun!
 
     - name: Extend the home directory logical volume
-      ansible.builtin.command: lvextend -l +100%FREE /dev/mapper/rootvg-homelv -r; mkdir home/azureuser/extended
-      creates: /home/azureuser/extended
+      ansible.builtin.shell:
+        cmd: lvextend -l +100%FREE /dev/mapper/rootvg-homelv -r; mkdir home/azureuser/extended
+        creates: /home/azureuser/extended
 
     # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html#examples
     - name: Create bin directory

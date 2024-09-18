@@ -19,7 +19,7 @@
 
     - name: Extend the home directory logical volume
       ansible.builtin.shell:
-        cmd: lvextend -l +100%FREE /dev/mapper/rootvg-homelv -r; mkdir home/azureuser/extended
+        cmd: lvextend -l +100%FREE /dev/mapper/rootvg-homelv -r
         creates: /home/azureuser/extended
 
     # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html#examples

@@ -17,6 +17,9 @@
       ansible.builtin.debug:
         msg: The playbook has begun!
 
+    - name: Extend the home directory logical volume
+      ansible.builtin.command: lvextend -l +100%FREE /dev/mapper/rootvg-homelv -r
+
     # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html#examples
     - name: Create bin directory
       ansible.builtin.file:

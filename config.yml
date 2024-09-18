@@ -26,8 +26,9 @@
 
     # https://www.jeffgeerling.com/blog/2017/add-path-global-path-ansible
     - name: Place bin in execution path
-      ansible.builtin.shell: "export PATH=$PATH:/home/azureuser/bin"
-      become: true
+      ansible.builtin.shell:
+        cmd: "export PATH=$PATH:/home/azureuser/bin"
+        become: true
 
     - name: Create venv
       ansible.builtin.command:

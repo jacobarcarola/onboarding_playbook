@@ -28,13 +28,9 @@
     - name: Place bin in execution path
       ansible.builtin.shell: "export PATH=$PATH:/home/azureuser/bin"
 
-    - name: Install pip
-      ansible.builtin.command:
-        cmd: python -m ensurepip --upgrade
-
     - name: Create venv
       ansible.builtin.command:
-        cmd: /bin/python -m venv /home/azureuser/my-venv
+        cmd: python -m venv /home/azureuser/my-venv
 
     - name: source the venv
       ansible.builtin.shell: source /home/azureuser/my-venv/bin/activate

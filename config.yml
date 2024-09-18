@@ -34,7 +34,7 @@
 
     - name: Create venv
       ansible.builtin.command:
-        cmd: sudo python -m venv /home/azureuser/my-venv
+        cmd: /bin/python -m venv /home/azureuser/my-venv
 
     - name: source the venv
       ansible.builtin.shell: source /home/azureuser/my-venv/bin/activate

@@ -32,8 +32,9 @@
     - name: Create venv
       ansible.builtin.command:
         cmd: python -m venv /home/azureuser/my-venv
+        become: true
 
-    - name: source the venv
+    - name: Source the venv
       ansible.builtin.shell: source /home/azureuser/my-venv/bin/activate
 
     # - name: Install pip in the venv

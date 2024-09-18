@@ -47,6 +47,13 @@
         virtualenv: /home/azureuser/my-venv
         extra_args: --no-cache-dir
 
+    # In order to clone the repositories below, Git needs to be installed:
+    - name: Install Git
+      ansible.builtin.dnf:
+        name: git-all
+        state: latest
+      become: true
+
     - name: Install azcollection
       ansible.builtin.command:
         cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install azure.azcollection -p /home/azureuser/my-venv/collections

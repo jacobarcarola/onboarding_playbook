@@ -31,6 +31,7 @@
     - name: Install pip
       ansible.builtin.command:
         cmd: python -m ensurepip --upgrade
+        become: true
 
     - name: Create venv
       ansible.builtin.command:

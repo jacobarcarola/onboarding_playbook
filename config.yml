@@ -62,12 +62,12 @@
       ansible.builtin.command:
         cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install azure.azcollection -p /home/azureuser/my-venv/collections
 
+    - name: Give rwx permissions to ansible_collections directory
+      ansible.builtin.shell: chmod 777 /home/azureuser/my-venv/collections/ansible_collections
+
     - name: Install ansible_azure_mgmt
       ansible.builtin.command:
         cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install /home/azureuser/ansible-azure-mgmt -p /home/azureuser/my-venv/collections
-
-    - name: Give rwx permissions to ansible_collections directory
-      ansible.builtin.shell: chmod 777 /home/azureuser/my-venv/collections/ansible_collections
 
     - name: Install ansible_azure_sre
       ansible.builtin.command:

@@ -54,7 +54,7 @@
         virtualenv: /home/azureuser/my-venv
         extra_args: --no-cache-dir
 
-    In order to clone the repositories below, Git needs to be installed:
+    # In order to clone the repositories below, Git needs to be installed:
     - name: Install Git
       ansible.builtin.dnf:
         name: git-all

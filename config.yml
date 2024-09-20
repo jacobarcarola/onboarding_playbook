@@ -32,6 +32,8 @@
     # https://www.jeffgeerling.com/blog/2017/add-path-global-path-ansible
     - name: Place bin in execution path
       ansible.builtin.shell: "export PATH=$PATH:/home/azureuser/bin"
+      register: output
+      changed_when: output.rc != 0
 
     - name: Create venv
       ansible.builtin.command:
@@ -72,7 +74,7 @@
         cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install /home/azureuser/ansible-azure-mgmt --no-cache -p /home/azureuser/my-venv/collections
 
     - name: Install ansible_azure_sre
-      ansible.builtin.command:
+      ansible.builtin.shell:
         cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install git@github.com:jacobarcarola/ansible-azure-sre.git -p /home/azureuser/my-venv/collections
 
     - name: Install managed_azure

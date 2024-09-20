@@ -82,5 +82,8 @@
         cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install /home/azureuser/repos/managed_azure -p /home/azureuser/my-venv/collections
 
     - name: Create kubectl alias
-      ansible.builtin.command:
-        cmd: echo 'alias k="kubectl"' >> .bashrc
+      ansible.builtin.lineinfile:
+        path: /home/azureuser/.bashrc
+        backup: true
+        insertafter: "EOF"
+        line: alias k="kubectl"

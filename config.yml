@@ -75,7 +75,7 @@
 
     - name: Install ansible_azure_sre
       ansible.builtin.shell:
-        cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install git@github.com:jacobarcarola/ansible-azure-sre.git -p /home/azureuser/my-venv/collections
+        cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install https://github.com/jacobarcarola/ansible-azure-sre.git -p /home/azureuser/my-venv/collections
 
     - name: Install managed_azure
       ansible.builtin.command:

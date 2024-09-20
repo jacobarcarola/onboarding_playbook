@@ -87,3 +87,6 @@
         backup: true
         insertafter: "EOF"
         line: alias k="kubectl"
+
+    - name: Source bashrc
+      ansible.builtin.shell: source /home/azureuser/.bashrc

@@ -69,7 +69,7 @@
 
     - name: Install ansible_azure_mgmt
       ansible.builtin.command:
-        cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install /home/azureuser/ansible-azure-mgmt -p /home/azureuser/my-venv/collections
+        cmd: /home/azureuser/my-venv/bin/ansible-galaxy collection install /home/azureuser/ansible-azure-mgmt --no-cache -p /home/azureuser/my-venv/collections
 
     - name: Install ansible_azure_sre
       ansible.builtin.command:

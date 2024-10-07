@@ -41,6 +41,6 @@
       loop: "{{ branches.results }}"
       when: "branch.name is search('^v\\d{4}-\\d{2}-\\d{2}-[A-Za-z0-9]+') and (current_date - (branch.name | regex_search('^v(\\d{4}-\\d{2}-\\d{2})', '\\1') | to_datetime('%Y-%m-%d'))).days > max_age"
 
-    - name: Print all of the branches older than 30 days
-      ansible.builtin.debug:
-        msg: "Branches older than 30 days: {{ deprecated_branches }}"
+    # - name: Print all of the branches older than 30 days
+    #   ansible.builtin.debug:
+    #     msg: "Branches older than 30 days: {{ deprecated_branches }}"

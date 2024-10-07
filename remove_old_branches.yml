@@ -1,0 +1,50 @@
+---
+- name: Clean up release branches older than 30 days
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  # Ideally, we want to remove branches that are timestamped
+  # and older than 30 days. There is no real benefit in
+  # keeping them around.
+
+  vars:
+    github_token: "{{ lookup('ansible.builtin.env', 'GITHUB_TOKEN', default='') }}"
+    user: "{{ lookup('ansible.builtin.env', 'USER', default='aoc-saas-bot' ) }}"
+    github_organization: "jacobarcarola"
+    repository_base_url: "https://api.github.com/repos/{{ github_organization }}"
+    max_age: 30
+    current_date: "{{ now(utc=true, fmt='%Y-%m-%d') | to_datetime('%Y-%m-%d') }}"
+
+    repos:
+      - "repo1"
+      - "repo2"
+
+  tasks:
+    - name: Get all branches from each repo
+      loop: "{{ repos }}"
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/{{ github_organization }}/{{ item }}/branches"
+        headers:
+          Authorization: "token {{ github_token }}"
+        method: GET
+        return_content: true
+      register: branches
+
+    - name: Print current date
+      ansible.builtin.debug:
+        msg: "The day is: {{ current_date }}"
+
+    - name: Get a list of all branches older than 30 days
+      ansible.builtin.set_fact:
+        deprecated_branches: "{{ deprecated_branches | default([]) + [branch.name] }}"
+      vars:
+        branch_list: "{{ item.json }}"
+      loop: "{{ branches.results }}"
+      loop_control:
+        loop_var: branch
+      when: "branch.name is search('^v\\d{4}-\\d{2}-\\d{2}-[A-Za-z0-9]+') and (current_date - (branch.name | regex_search('^v(\\d{4}-\\d{2}-\\d{2})', '\\1') | to_datetime('%Y-%m-%d'))).days > max_age"
+
+    - name: Print all of the branches older than 30 days
+      ansible.builtin.debug:
+        msg: "Branches older than 30 days: {{ deprecated_branches }}"

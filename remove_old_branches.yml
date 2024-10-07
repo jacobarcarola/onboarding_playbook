@@ -36,13 +36,9 @@
         msg: "The day is: {{ current_date }}"
 
     - name: Get a list of all branches older than 30 days
-      ansible.builtin.set_fact:
-        deprecated_branches: "{{ deprecated_branches | default([]) + [branch.name] }}"
-      vars:
-        branch_list: "{{ item.json }}"
+      ansible.builtin.debug:
+        msg: "Branches older than 30 days: {{ branches.results | list }}"
       loop: "{{ branches.results }}"
-      loop_control:
-        loop_var: branch
       when: "branch.name is search('^v\\d{4}-\\d{2}-\\d{2}-[A-Za-z0-9]+') and (current_date - (branch.name | regex_search('^v(\\d{4}-\\d{2}-\\d{2})', '\\1') | to_datetime('%Y-%m-%d'))).days > max_age"
 
     - name: Print all of the branches older than 30 days

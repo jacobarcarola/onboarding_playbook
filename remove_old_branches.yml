@@ -15,7 +15,7 @@
     repository_base_url: "https://api.github.com/repos/{{ github_organization }}"
     max_age: 30
     current_date: "{{ now(utc=true, fmt='%Y-%m-%d') | to_datetime('%Y-%m-%d') }}"
-    date_pattern: "^v[0-9]{4}-[0-9]{2}-[0-9]{2}.*"
+    release_branch_pattern: "^v[0-9]{4}-[0-9]{2}-[0-9]{2}.*"
 
     repos:
       - "repo1"
@@ -32,7 +32,6 @@
           X-GitHub-Api-Version: "2022-11-28"
           Accept: application/vnd.github+json
 
-
     - name: Get all branches from repo1
       ansible.builtin.uri:
         url: "https://api.github.com/repos/{{ github_organization }}/repo1/branches"
@@ -41,20 +40,43 @@
         return_content: true
       register: branches
 
+    - name: Print the current date
+      ansible.builtin.debug:
+        msg: "Today's date is: {{ current_date }}"
+
     - name: Print branches from repo1
       ansible.builtin.debug:
         msg: "Branches: {{ branches.json | map(attribute='name') | list }}"
 
-    - name: Print only the branches that are in YYYY-MM-DD format
-      ansible.builtin.debug:
-        msg: "Dated branches: {{ branches.json | map(attribute='name') | map('regex_search', date_pattern) | select('string') | list }}"
-      when: branches.json | map(attribute='name') | map('regex_search', date_pattern) | select('string')
+    - name: Obtain a list of release branches with YYYY-MM-DD dates
+      ansible.builtin.set_fact:
+        release_branches: "{{ branches.json | map(attribute='name') | map('regex_search', release_branch_pattern) | select('string') }}"
 
-    - name: Print the branches older than 30 days
+    - name: Print release branches
       ansible.builtin.debug:
-        msg: "Dated branches: {{ branches.json | map(attribute='name') | map('regex_search', date_pattern) | select('string') | list }}"
-      when: (current_date - (branches.json | map(attribute='name') | map('regex_search', date_pattern) | select('string') | to_datetime('%Y-%m-%d'))).days > max_age
+        msg: "Release branches: {{ release_branches }}"
 
-    - name: Print current date
+    - name: Compare and create list of old releases
       ansible.builtin.debug:
-        msg: "The day is: {{ current_date }}"
+        msg: "{{ item | map('regex_replace', 'v', '') | map('regex_replace', '-[a-z].*$', '') }}"
+      loop: "{{ release_branches }}"
+      # when: (current_date - (item | map('regex_replace', 'v', '') | map('regex_replace', '-[a-z].*$', '') | to_datetime('%Y-%m-%d'))) > 30
+
+    # - name: Create empty list
+    #   ansible.builtin.set_fact:
+    #     date_comparisons: []
+
+    # - name: Format release branches into datetime objects
+    #   ansible.builtin.set_fact:
+    #     formatted_branches: "{{ release_branches
+    #                             | map('regex_replace', 'v', '')
+    #                             | map('regex_replace', '-[a-z].*$', '')
+    #                             | list }}"
+
+    # - name: Print formatted branches
+    #   ansible.builtin.debug:
+    #     msg: "Branches: {{ formatted_branches | type_debug }}"
+
+    # - name: Print release branches older than 30 days
+    #   ansible.builtin.debug:
+    #     msg: "Branches older than 30 days: {{ date_comparisons }}"
